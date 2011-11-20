@@ -1,0 +1,22 @@
+{
+	"name": "Screen Scraper",
+	"version": "1.0",
+	"description": "Scrape websites for information.",
+	"browser_action": {
+		"default_icon": "icon.png"
+	},
+	"permissions": [
+		"tabs",
+		"http://*/*",
+		"https://*/*"
+	],
+	"browser_action": {
+		"default_title": "ScrapeScrapeScrape.",
+		"default_icon": "icon.png",
+		"popup": "popup.html"
+	},
+	"content_scripts": [{
+		"matches": ["http://*/*","https://*/*"],
+		"js": ["jquery.min.js", "scraper.js"]
+	}]
+}

@@ -1,0 +1,48 @@
+<style>
+	body {
+		overflow: hidden;
+		margin: 0px;
+		padding: 0px;
+		background: white;
+		width: 500px;
+	}
+
+
+
+</style>
+<script type="text/javascript" src="jquery.min.js"></script> 
+<script>
+	$(document).ready(function() {
+		//chrome.tabs.executeScript(null, {file: "jquery.min.js", file: "scraper.js"});
+		$("#elements").submit(function() {
+			var elements = $("#textelements").val();
+			var attr = $("#textattr").val();
+			chrome.tabs.getSelected(null, function(tab) {
+				chrome.tabs.sendRequest(tab.id, {elements: elements, attr: attr}, function(response) {
+					//console.log(response);
+					var results = response.elements;
+					var resultsstr = ""
+					for (var i = 0; i < results.length; i++) {
+						resultsstr += results[i] + "\n";
+					}
+					$("#results").val(resultsstr);
+				});
+			});
+
+			return false;
+		})
+		//chrome.extension.onRequest.addListener(
+		//	function(request, sender, sendResponse) {
+		//		console.log(request);
+		//	}
+		//);
+	});
+</script>
+
+<div class="frame">
+	<form id="elements">
+		$(<input id="textelements" type="text" name="fname" />).attr(<input id="textattr" type="text" name="fname" />)
+		<input type="submit" value="go" /><br/>
+	</form>
+	<textarea id="results" rows="5" cols="20"></textarea>
+</div>

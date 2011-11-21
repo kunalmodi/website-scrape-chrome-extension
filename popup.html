@@ -14,9 +14,28 @@
 <script>
 	$(document).ready(function() {
 		//chrome.tabs.executeScript(null, {file: "jquery.min.js", file: "scraper.js"});
+
+		// pull from local storage
+		var old_elements_value = "";
+		var old_attr_value = "";
+		try {
+			old_elements_value = window.localStorage.getItem("elements").toString();
+			old_attr_value = window.localStorage.getItem("attr").toString();
+		} catch(e) {}
+		$("#textelements").val(old_elements_value);
+		$("#textattr").val(old_attr_value);
+
 		$("#elements").submit(function() {
 			var elements = $("#textelements").val();
 			var attr = $("#textattr").val();
+
+			try { // store in local storage
+				window.localStorage.removeItem("elements");
+				window.localStorage.setItem("elements", elements.toString());
+				window.localStorage.removeItem("attr");
+				window.localStorage.setItem("attr", attr.toString());
+			} catch(e){ console.log(e); }
+
 			chrome.tabs.getSelected(null, function(tab) {
 				chrome.tabs.sendRequest(tab.id, {elements: elements, attr: attr}, function(response) {
 					//console.log(response);
